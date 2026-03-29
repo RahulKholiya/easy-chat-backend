@@ -25,12 +25,21 @@ const __dirname = path.resolve();
 
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://easy-chat-frontend-4m52bdt4n-rahulkholiyas-projects.vercel.app"
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
 app.use(
   cors({
     origin: "*",
