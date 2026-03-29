@@ -1,0 +1,16 @@
+import express from "express";
+import { protectRoute } from "../middleware/auth.middleware.js";
+import {
+  createGroup,
+  getGroups,
+} from "../controllers/group.controller.js";
+
+const router = express.Router();
+
+router.post("/", protectRoute, createGroup);
+
+router.get("/", protectRoute, getGroups);
+import { updateGroup } from "../controllers/group.controller.js";
+
+router.put("/:id", protectRoute, updateGroup);
+export default router;
