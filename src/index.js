@@ -27,7 +27,8 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://easy-chat-frontend-4m52bdt4n-rahulkholiyas-projects.vercel.app"
+  "https://easy-chat-frontend-4m52bdt4n-rahulkholiyas-projects.vercel.app",
+  "https://easy-chat-frontend-theta.vercel.app"
 ];
 
 app.use(cors({
@@ -35,12 +36,11 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(null, true); // 🔥 allow temporarily for all (optional)
     }
   },
   credentials: true,
 }));
-
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
