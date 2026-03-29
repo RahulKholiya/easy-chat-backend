@@ -14,6 +14,8 @@ import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import groupRoutes from "./routes/group.route.js";
 import aiRoutes from "./routes/ai.route.js";
+import cors from "cors";
+
 
 
 dotenv.config();
@@ -26,6 +28,12 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+app.use(
+  cors({
+    origin: "*",
     credentials: true,
   })
 );
