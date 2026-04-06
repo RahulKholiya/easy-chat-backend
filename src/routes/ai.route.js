@@ -1,7 +1,7 @@
 import express from "express";
 import { model } from "../lib/gemini.js";
 
-const router = express.Router(); // ✅ define FIRST
+const router = express.Router();
 
 router.post("/", async (req, res) => {
 try {
@@ -50,7 +50,6 @@ res.status(200).json({ answer: text });
 console.log("AI ERROR:", error.message);
 
 ```
-// 🔥 fallback response
 return res.status(200).json({
   answer: "⚡ I'm a bit busy right now, try again in a moment!",
 });
