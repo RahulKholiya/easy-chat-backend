@@ -1,7 +1,13 @@
 import express from "express";
 import { model } from "../lib/gemini.js";
+import { aiController } from "../controllers/ai.controller.js";
+
+
+
+router.post("/", aiController);
 
 const router = express.Router();
+
 
 router.post("/", async (req, res) => {
     try {
