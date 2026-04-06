@@ -7,11 +7,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [
-      "http://localhost:5173",
-      "https://easy-chat-frontend-4m52bdt4n-rahulkholiyas-projects.vercel.app",
-      "https://easy-chat-frontend-theta.vercel.app"
-    ],
+    origin: true,
     credentials: true,
   },
 });

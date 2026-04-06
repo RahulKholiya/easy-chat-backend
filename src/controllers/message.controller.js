@@ -57,37 +57,37 @@ export const getMessages = async (req, res) => {
 
     if (req.query.type === "group") {
       messages = await Message.find({ groupId: id })
-  .populate("senderId", "fullName profilePic");
+        .populate("senderId", "fullName profilePic");
     } else {
       messages = await Message.find({
-  $or: [
-    { senderId: myId, receiverId: id },
-    { senderId: id, receiverId: myId },
-  ],
-}).populate("senderId", "fullName profilePic");
+        $or: [
+          { senderId: myId, receiverId: id },
+          { senderId: id, receiverId: myId },
+        ],
+      }).populate("senderId", "fullName profilePic");
     }
 
     // DECRYPT 
     const decryptedMessages = messages.map((msg) => ({
       ...msg._doc,
       text: (() => {
-  const text = msg.text;
+        const text = msg.text;
 
-  // If already normal text → return directly
-  if (!text || text.length < 20) {
-    return text;
-  }
+        // If already normal text → return directly
+        if (!text || text.length < 20) {
+          return text;
+        }
 
-  try {
-    return decryptMessage(text); // new AES
-  } catch {
-    try {
-      return decrypt(text); // old AES
-    } catch {
-      return text; // fallback plain
-    }
-  }
-})(),
+        try {
+          return decryptMessage(text); // new AES
+        } catch {
+          try {
+            return decrypt(text); // old AES
+          } catch {
+            return text; // fallback plain
+          }
+        }
+      })(),
     }));
 
     res.status(200).json(decryptedMessages);
@@ -166,7 +166,7 @@ export const sendMessage = async (req, res) => {
         io.to(receiverSocketId).emit("newMessage", messageToSend);
       }
 
-      
+
       const senderSocketId = getReceiverSocketId(senderId);
 
       if (senderSocketId) {
@@ -174,7 +174,7 @@ export const sendMessage = async (req, res) => {
       }
     } else {
       // GROUP CHAT
-      io.emit("newMessage", messageToSend);
+      io.to(groupId).emit("newMessage", messageToSend);
     }
 
     //  AI MESSAGE
@@ -189,15 +189,29 @@ export const sendMessage = async (req, res) => {
 
       await aiMessage.save();
 
-      io.emit("newMessage", {
+      const formattedAIMessage = {
         ...aiMessage._doc,
         senderId: {
           fullName: "EMO ",
           profilePic: "/emo.png",
         },
         text: aiResponse,
-      });
+      };
+
+      if (!groupId) {
+        const senderSocketId = getReceiverSocketId(senderId);
+
+        ```
+if (senderSocketId) {
+  io.to(senderSocketId).emit("newMessage", formattedAIMessage);
+}
+```
+
+      } else {
+        io.to(groupId).emit("newMessage", formattedAIMessage);
+      }
     }
+
 
     // SINGLE RESPONSE
     res.status(201).json(messageToSend);
