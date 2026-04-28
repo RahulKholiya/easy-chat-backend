@@ -107,10 +107,19 @@ export const sendMessage = async (req, res) => {
     let imageUrl = null;
     let audioUrl = null;
 
-    if (image) {
-      const upload = await cloudinary.uploader.upload(image);
-      imageUrl = upload.secure_url;
-    }
+    let imageUrl = null;
+
+if (image) {
+  // 🔥 If already encrypted, store directly
+  if (image.startsWith("U2FsdGVk")) {
+    // AES encrypted string (CryptoJS signature)
+    imageUrl = image;
+  } else {
+    // normal image → upload
+    const uploadResponse = await cloudinary.uploader.upload(image);
+    imageUrl = uploadResponse.secure_url;
+  }
+}
 
     if (audio) {
       const upload = await cloudinary.uploader.upload(audio, {
