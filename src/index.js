@@ -15,7 +15,7 @@ import messageRoutes from "./routes/message.route.js";
 import groupRoutes from "./routes/group.route.js";
 import aiRoutes from "./routes/ai.route.js";
 
-
+console.log("KEY:", process.env.GEMINI_API_KEY);
 
 
 dotenv.config();
@@ -25,28 +25,11 @@ const __dirname = path.resolve();
 
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
-// app.use(cors({
-//   origin: true,   // 🔥 allow all frontend URLs
-//   credentials: true,
-// }));
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://easy-chat-frontend-iimfk37t1-rahulkholiyas-projects.vercel.app",
-  "https://easy-chat-frontend-theta.vercel.app"
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(null, true); // allow temporarily
-    }
-  },
+  origin: true,   // 🔥 allow all frontend URLs
   credentials: true,
 }));
 
-app.options("*", cors()); // 🔥 VERY IMPORTANT
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
