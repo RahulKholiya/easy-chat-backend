@@ -107,7 +107,7 @@ export const sendMessage = async (req, res) => {
     let imageUrl = null;
     let audioUrl = null;
 
-    let imageUrl = null;
+    
 
 if (image) {
   // 🔥 If already encrypted, store directly
