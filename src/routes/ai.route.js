@@ -36,12 +36,12 @@ User: ${prompt}
 
     return res.status(200).json({ answer: text });
   } catch (error) {
-    console.log("AI ERROR:", error.message);
+  console.log("FULL AI ERROR:", error); // 🔥 important
 
-    return res.status(200).json({
-      answer: "⚡ I'm a bit busy right now, try again in a moment!",
-    });
-  }
+  return res.status(200).json({
+    answer: "⚡ I'm a bit busy right now, try again in a moment!",
+  });
+}
 });
 
 export default router;
