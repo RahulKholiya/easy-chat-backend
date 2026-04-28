@@ -29,7 +29,7 @@ app.use(cors({
   origin: true,   // 🔥 allow all frontend URLs
   credentials: true,
 }));
-app.options("*", cors());
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
