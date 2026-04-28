@@ -36,10 +36,10 @@ User: ${prompt}
 
     return res.status(200).json({ answer: text });
   } catch (error) {
-  console.log("FULL AI ERROR:", error); // 🔥 important
+  console.log("FULL AI ERROR:", error); // 🔥 show everything
 
-  return res.status(200).json({
-    answer: "⚡ I'm a bit busy right now, try again in a moment!",
+  return res.status(500).json({
+    error: error.message,
   });
 }
 });
